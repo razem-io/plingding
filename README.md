@@ -37,6 +37,14 @@ cargo build --release
 
 The compiled binary will be available in `target/release/plingding`.
 
+For an optimized and smaller binary, you can use the `strip` command after building:
+
+```
+strip target/release/plingding
+```
+
+This will remove debug symbols from the binary, significantly reducing its size.
+
 ## Creating Releases
 
 Follow these steps:
