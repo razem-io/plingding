@@ -4,7 +4,7 @@ This is a Rust application that sends push notifications via pushover.net. It ca
 
 ## Prerequisites
 
-1. Rust and Cargo installed on your system
+1. Rust and Cargo installed on your system (for building from source)
 2. A Pushover account with an API token and user key
 
 ## Setup
@@ -27,15 +27,58 @@ This is a Rust application that sends push notifications via pushover.net. It ca
 
    You can add these lines to your shell's configuration file (e.g., `.bashrc`, `.zshrc`, or `config.fish`) to make them permanent.
 
-## Building
+## Building from Source
 
-To build the application, run:
+To build the application from source, run:
 
 ```
 cargo build --release
 ```
 
 The compiled binary will be available in `target/release/plingding`.
+
+## Installing from AUR (Arch User Repository)
+
+If you're using an Arch-based Linux distribution, you can install PlingDing from the AUR using one of the following methods:
+
+### Using an AUR Helper
+
+1. Make sure you have an AUR helper installed (e.g., yay, paru)
+2. Run the following command:
+
+   ```
+   yay -S plingding
+   ```
+
+   Replace `yay` with your preferred AUR helper if different.
+
+3. Follow the prompts to install the package
+
+### Manual Installation
+
+If you prefer not to use an AUR helper, you can manually install plingding from the AUR:
+
+1. Make sure you have the necessary tools installed:
+   ```
+   sudo pacman -S --needed base-devel git
+   ```
+
+2. Clone the AUR package repository:
+   ```
+   git clone https://aur.archlinux.org/plingding.git
+   cd plingding
+   ```
+
+3. Build and install the package:
+   ```
+   makepkg -si
+   ```
+
+   This command will download the source, build the package, and install it. The `-si` flags mean it will install any needed dependencies and then install the built package.
+
+4. If you want to review the PKGBUILD before building, you can open it in a text editor and then run `makepkg -si` when you're ready to proceed.
+
+After installation using either method, the `plingding` command will be available system-wide.
 
 ## Usage
 
@@ -52,17 +95,17 @@ Options:
 
 1. Send a simple message:
    ```
-   ./plingding -m "Hello, World!"
+   plingding -m "Hello, World!"
    ```
 
 2. Send a message with high priority:
    ```
-   ./plingding -m "Urgent message" -p 2
+   plingding -m "Urgent message" -p 2
    ```
 
 3. Send a message with an attached image:
    ```
-   ./plingding -m "Check out this image" -i /path/to/image.jpg
+   plingding -m "Check out this image" -i /path/to/image.jpg
    ```
 
 ## Note
