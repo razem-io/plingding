@@ -1,8 +1,3 @@
-use jemallocator::Jemalloc;
-
-#[global_allocator]
-static GLOBAL: Jemalloc = Jemalloc;
-
 use anyhow::{Context, Result};
 use clap::Parser;
 use reqwest::multipart::{Form, Part};

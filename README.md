@@ -29,7 +29,7 @@ This is a Rust application that sends push notifications via pushover.net. It ca
 
 ## Building from Source
 
-To build the application from source, run:
+To build the application for your current platform, run:
 
 ```
 cargo build --release
@@ -45,6 +45,28 @@ strip target/release/plingding
 
 This will remove debug symbols from the binary, significantly reducing its size.
 
+## Cross-Platform Compilation
+
+PlingDing supports cross-platform compilation for Linux and Windows from a Linux host. To build for these platforms, follow these steps:
+
+1. Install the `cross` tool:
+   ```
+   cargo install cross
+   ```
+
+2. Install the required target:
+   ```
+   rustup target add x86_64-pc-windows-gnu
+   ```
+
+3. Run the build script:
+   ```
+   chmod +x build.sh
+   ./build.sh
+   ```
+
+This will create binaries for Linux and Windows in the `releases` directory.
+
 ## Creating Releases
 
 Follow these steps:
@@ -59,6 +81,12 @@ Follow these steps:
    ```
    git push origin v0.x.x
    ```
+5. Run the build script on a Linux system to create binaries for Linux and Windows:
+   ```
+   ./build.sh
+   ```
+6. Build the macOS version on a macOS system as described in the "Building for macOS" section.
+7. Create a new release on GitHub, upload the binaries for all three platforms, and publish the release.
 
 ## Installing from AUR (Arch User Repository)
 
@@ -134,3 +162,9 @@ Options:
 ## Note
 
 Make sure to set the PUSHOVER_API_TOKEN and PUSHOVER_USER_KEY environment variables before running the application. If these environment variables are not set, the application will return an error message indicating which variable is missing.
+
+## Platform-Specific Notes
+
+- **Linux**: The application should work out of the box on most Linux distributions.
+- **Windows**: When using the Windows binary, you may need to set environment variables through the System Properties or use the `set` command in the command prompt before running the application.
+- **macOS**: The macOS binary should work similarly to the Linux version. Ensure you've built it on a macOS system as described in the "Building for macOS" section.
