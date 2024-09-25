@@ -1,0 +1,19 @@
+# Generated files
+/target/
+
+# The library shouldn't ignore the Cargo.lock file, but binary projects should.
+# Uncomment the following line if this is a binary project
+# Cargo.lock
+
+# Backup files created by rustfmt
+**/*.rs.bk
+
+# MSVC Windows builds of rustc generate these, which store debugging information
+*.pdb
+
+# IDE specific files
+.vscode/
+.idea/
+
+# macOS specific files
+.DS_Store
