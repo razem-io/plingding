@@ -37,6 +37,21 @@ cargo build --release
 
 The compiled binary will be available in `target/release/plingding`.
 
+## Creating Releases
+
+Follow these steps:
+
+1. Update the version number in `Cargo.toml` and `PKGBUILD`.
+2. Commit all changes and push to the repository.
+3. Create a new git tag for the release:
+   ```
+   git tag -a v0.x.x -m "Release v0.x.x"
+   ```
+4. Push the tag:
+   ```
+   git push origin v0.x.x
+   ```
+
 ## Installing from AUR (Arch User Repository)
 
 If you're using an Arch-based Linux distribution, you can install PlingDing from the AUR using one of the following methods:
