@@ -1,8 +1,8 @@
 # Maintainer: Julian Pieles <plingding@pieles.digital>
 pkgname=plingding
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=1
-pkgdesc="A Rust application that sends push notifications via pushover.net. It can be used from the command line to send messages with optional priority and image attachments."
+pkgdesc="A Rust application that sends push notifications via multiple providers (e.g., Pushover, ntfy). It can be used from the command line to send messages with optional priority and image attachments."
 arch=('x86_64')
 url="https://github.com/razem-io/plingding"
 license=('MIT')

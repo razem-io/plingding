@@ -1,11 +1,11 @@
 # PlingDing
 
-This is a Rust application that sends push notifications via pushover.net. It can be used from the command line to send messages with optional priority and image attachments.
+This is a Rust application that sends push notifications via multiple providers, including Pushover and ntfy. It can be used from the command line to send messages with optional priority and image attachments.
 
 ## Prerequisites
 
 1. Rust and Cargo installed on your system (for building from source)
-2. A Pushover account with an API token and user key
+2. Accounts with supported push notification services (e.g., Pushover, ntfy)
 
 ## Setup
 
@@ -15,7 +15,7 @@ This is a Rust application that sends push notifications via pushover.net. It ca
 
 ## Configuration
 
-PlingDing now uses a YAML configuration file instead of environment variables. You can place your configuration file in one of the following locations:
+PlingDing uses a YAML configuration file. You can place your configuration file in one of the following locations:
 
 - `~/.plingding.yaml`
 - `~/.config/plingding/plingding.yaml`
@@ -24,12 +24,35 @@ PlingDing now uses a YAML configuration file instead of environment variables. Y
 Create a file named `plingding.yaml` in one of these locations with the following content:
 
 ```yaml
-api_key: "your_pushover_api_key_here"
-user_key: "your_pushover_user_key_here"
-base_url: "https://api.pushover.net/1/messages.json"
+providers:
+  - name: "pushover_personal"
+    provider_type: "pushover"
+    api_key: "your_pushover_api_key_here"
+    user_key: "your_pushover_user_key_here"
+    default: true
+
+  - name: "ntfy_work"
+    provider_type: "ntfy"
+    api_key: "your_ntfy_api_key_here"
+    base_url: "https://ntfy.sh/your_topic"
+    default: true
+
+  # Add more providers as needed
 ```
 
-Replace `your_pushover_api_key_here` and `your_pushover_user_key_here` with your actual Pushover API key and user key.
+Replace the placeholder values with your actual API keys and other required information.
+
+### Provider Types
+
+1. Pushover:
+   - Required fields: `name`, `provider_type` (set to "pushover"), `api_key`, `user_key`
+   - Optional fields: `default` (set to true if you want this provider to be used by default)
+
+2. ntfy:
+   - Required fields: `name`, `provider_type` (set to "ntfy"), `api_key`, `base_url`
+   - Optional fields: `default` (set to true if you want this provider to be used by default)
+
+You can add multiple providers of the same type with different configurations.
 
 ## Building from Source
 
@@ -145,17 +168,18 @@ Options:
 - `-m, --message <MESSAGE>`: The message to send (required)
 - `-p, --priority <PRIORITY>`: The priority of the message (-2 to 2, default: 0)
 - `-i, --image <IMAGE>`: The path to an image to attach (optional)
+- `--providers <PROVIDERS>`: Comma-separated list of provider names to use (optional, uses default providers if not specified)
 
 ## Examples
 
-1. Send a simple message:
+1. Send a simple message using default providers:
    ```
    plingding -m "Hello, World!"
    ```
 
-2. Send a message with high priority:
+2. Send a message with high priority to specific providers:
    ```
-   plingding -m "Urgent message" -p 2
+   plingding -m "Urgent message" -p 2 --providers pushover_personal,ntfy_work
    ```
 
 3. Send a message with an attached image:

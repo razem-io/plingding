@@ -1,10 +1,49 @@
 # Plingding Configuration File
+#
+# This file configures the push notification providers for Plingding.
+# Copy this file to one of the following locations and modify it:
+# - ~/.plingding.yaml
+# - ~/.config/plingding/plingding.yaml
+# - ./plingding.yaml (in the current working directory)
 
-# Your Pushover API key
-api_key: "your_api_key_here"
+# List of push providers
+providers:
+  # Pushover provider example
+  - name: "pushover_personal"
+    provider_type: "pushover"
+    api_key: "your_pushover_api_key_here"
+    user_key: "your_pushover_user_key_here"
+    default: true  # This provider will be used by default if no providers are specified in the CLI
 
-# Your Pushover user key
-user_key: "your_user_key_here"
+  # Another Pushover provider with different configuration
+  - name: "pushover_work"
+    provider_type: "pushover"
+    api_key: "your_work_pushover_api_key_here"
+    user_key: "your_work_pushover_user_key_here"
+    # Note: default is false if not specified
 
-# Pushover API base URL
-base_url: "https://api.pushover.net/1/messages.json"
+  # ntfy provider example
+  - name: "ntfy_personal"
+    provider_type: "ntfy"
+    api_key: "your_ntfy_api_key_here"
+    base_url: "https://ntfy.sh/your_personal_topic"
+    default: true  # This provider will be used by default if no providers are specified in the CLI
+
+  # Another ntfy provider with different configuration
+  - name: "ntfy_work"
+    provider_type: "ntfy"
+    api_key: "your_work_ntfy_api_key_here"
+    base_url: "https://ntfy.sh/your_work_topic"
+    # Note: default is false if not specified
+
+# Usage examples:
+# 1. Send to all default providers:
+#    plingding --message "Your message here"
+#
+# 2. Send to specific providers:
+#    plingding --providers "pushover_work,ntfy_work" --message "Your message here"
+#
+# 3. Send with priority and image:
+#    plingding --providers "pushover_personal" --message "Important message" --priority 2 --image /path/to/image.jpg
+
+# Note: You can add as many providers as you need, and use the same provider type multiple times with different configurations.
