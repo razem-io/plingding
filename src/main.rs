@@ -28,7 +28,7 @@ struct Args {
     watch: Option<String>,
 
     /// The providers to use (comma-separated list)
-    #[arg(short, long)]
+    #[arg(short = 'r', long)]
     providers: Option<String>,
 }
 
@@ -129,7 +129,7 @@ async fn send_ntfy_notification(client: &reqwest::Client, provider: &PushProvide
     Ok(())
 }
 
-fn select_providers(config: &Config, cli_providers: Option<&str>) -> Vec<&PushProvider> {
+fn select_providers<'a>(config: &'a Config, cli_providers: Option<&'a str>) -> Vec<&'a PushProvider> {
     match cli_providers {
         Some(providers) => providers
             .split(',')
