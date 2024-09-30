@@ -1,10 +1,12 @@
+mod config;
+
 use anyhow::{Context, Result};
 use clap::Parser;
 use reqwest::multipart::{Form, Part};
 use serde::Serialize;
 use std::path::PathBuf;
-use std::env;
 use std::process::Command;
+use config::Config;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -44,10 +46,10 @@ fn execute_command(command: &str) -> Result<bool> {
     Ok(output.status.success())
 }
 
-async fn send_notification(client: &reqwest::Client, api_token: &str, user_key: &str, message: &str, priority: i8, image: Option<PathBuf>) -> Result<()> {
+async fn send_notification(client: &reqwest::Client, config: &Config, message: &str, priority: i8, image: Option<PathBuf>) -> Result<()> {
     let mut form = Form::new()
-        .text("token", api_token.to_string())
-        .text("user", user_key.to_string())
+        .text("token", config.api_key.clone())
+        .text("user", config.user_key.clone())
         .text("message", message.to_string())
         .text("priority", priority.to_string());
 
@@ -62,7 +64,7 @@ async fn send_notification(client: &reqwest::Client, api_token: &str, user_key: 
     }
 
     let response = client
-        .post("https://api.pushover.net/1/messages.json")
+        .post(&config.base_url)
         .multipart(form)
         .send()
         .await?;
@@ -81,11 +83,8 @@ async fn send_notification(client: &reqwest::Client, api_token: &str, user_key: 
 async fn main() -> Result<()> {
     let args = Args::parse();
 
-    // Read API token and user key from environment variables
-    let api_token = env::var("PUSHOVER_API_TOKEN")
-        .context("PUSHOVER_API_TOKEN environment variable not set")?;
-    let user_key = env::var("PUSHOVER_USER_KEY")
-        .context("PUSHOVER_USER_KEY environment variable not set")?;
+    // Load configuration
+    let config = Config::load().context("Failed to load configuration")?;
 
     let client = reqwest::Client::new();
 
@@ -103,10 +102,10 @@ async fn main() -> Result<()> {
             message.push_str(&additional_msg);
         }
 
-        send_notification(&client, &api_token, &user_key, &message, args.priority, args.image).await?;
+        send_notification(&client, &config, &message, args.priority, args.image).await?;
     } else {
         let message = args.message.unwrap_or_else(|| "Plingding!".to_string());
-        send_notification(&client, &api_token, &user_key, &message, args.priority, args.image).await?;
+        send_notification(&client, &config, &message, args.priority, args.image).await?;
     }
 
     Ok(())

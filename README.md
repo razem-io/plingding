@@ -11,21 +11,25 @@ This is a Rust application that sends push notifications via pushover.net. It ca
 
 1. Clone this repository
 2. Navigate to the project directory
-3. Set up environment variables for your Pushover API token and user key:
+3. Set up your configuration file (see Configuration section below)
 
-   For Bash/Zsh:
-   ```
-   export PUSHOVER_API_TOKEN="your_api_token_here"
-   export PUSHOVER_USER_KEY="your_user_key_here"
-   ```
+## Configuration
 
-   For Fish:
-   ```
-   set -x PUSHOVER_API_TOKEN "your_api_token_here"
-   set -x PUSHOVER_USER_KEY "your_user_key_here"
-   ```
+PlingDing now uses a YAML configuration file instead of environment variables. You can place your configuration file in one of the following locations:
 
-   You can add these lines to your shell's configuration file (e.g., `.bashrc`, `.zshrc`, or `config.fish`) to make them permanent.
+- `~/.plingding.yaml`
+- `~/.config/plingding/plingding.yaml`
+- `./plingding.yaml` (in the current working directory)
+
+Create a file named `plingding.yaml` in one of these locations with the following content:
+
+```yaml
+api_key: "your_pushover_api_key_here"
+user_key: "your_pushover_user_key_here"
+base_url: "https://api.pushover.net/1/messages.json"
+```
+
+Replace `your_pushover_api_key_here` and `your_pushover_user_key_here` with your actual Pushover API key and user key.
 
 ## Building from Source
 
@@ -161,10 +165,10 @@ Options:
 
 ## Note
 
-Make sure to set the PUSHOVER_API_TOKEN and PUSHOVER_USER_KEY environment variables before running the application. If these environment variables are not set, the application will return an error message indicating which variable is missing.
+Make sure to set up your configuration file as described in the Configuration section before running the application. If the configuration file is not found or is invalid, the application will return an error message.
 
 ## Platform-Specific Notes
 
 - **Linux**: The application should work out of the box on most Linux distributions.
-- **Windows**: When using the Windows binary, you may need to set environment variables through the System Properties or use the `set` command in the command prompt before running the application.
+- **Windows**: When using the Windows binary, make sure to place your configuration file in one of the specified locations.
 - **macOS**: The macOS binary should work similarly to the Linux version. Ensure you've built it on a macOS system as described in the "Building for macOS" section.
